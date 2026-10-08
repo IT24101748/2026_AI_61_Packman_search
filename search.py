@@ -117,9 +117,37 @@ def breadthFirstSearch(problem: SearchProblem):
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+def uniformCostSearch(problem: SearchProblem):
+    """
+    UCS explores the lowest-cost path first. Mark states as expanded when
+    they are popped, so a cheaper path can still reach them while queued.
+    """
+    frontier = util.PriorityQueue()
+    frontier.push((problem.getStartState(), [], 0), 0)
+    expanded = set()
 
+    while not frontier.isEmpty():
+        state, actions, cost = frontier.pop()
+
+        if state in expanded:
+            continue
+
+        if problem.isGoalState(state):
+            return actions
+
+        expanded.add(state)
+
+        for next_state, action, step_cost in problem.getSuccessors(state):
+            if next_state not in expanded:
+                new_cost = cost + step_cost
+                frontier.push(
+                    (next_state, actions + [action], new_cost),
+                    new_cost
+                )
+
+    return []
+    
+    
 
 def nullHeuristic(state, problem=None):
     """
