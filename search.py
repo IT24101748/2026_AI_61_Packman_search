@@ -115,8 +115,7 @@ def breadthFirstSearch(problem: SearchProblem):
     util.raiseNotDefined()
 
 
-def uniformCostSearch(problem: SearchProblem):
-    """Search the node of least total cost first."""
+
 def uniformCostSearch(problem: SearchProblem):
     """
     UCS explores the lowest-cost path first. Mark states as expanded when
