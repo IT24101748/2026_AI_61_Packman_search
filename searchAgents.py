@@ -34,6 +34,7 @@ description for details.
 Good luck and happy searching!
 """
 
+from turtle import position
 from typing import List, Tuple, Any
 from game import Directions
 from game import Agent
@@ -295,14 +296,16 @@ class CornersProblem(search.SearchProblem):
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
-        "*** YOUR CODE HERE ***"
+        visited = frozenset([self.startingPosition] if self.startingPosition in self.corners else [])
+        return (self.startingPosition, visited)
+
         util.raiseNotDefined()
 
     def isGoalState(self, state: Any):
         """
         Returns whether this search state is a goal state of the problem.
         """
-        "*** YOUR CODE HERE ***"
+        return len(state[1]) == 4
         util.raiseNotDefined()
 
     def getSuccessors(self, state: Any):
@@ -325,7 +328,15 @@ class CornersProblem(search.SearchProblem):
             #   nextx, nexty = int(x + dx), int(y + dy)
             #   hitsWall = self.walls[nextx][nexty]
 
-            "*** YOUR CODE HERE ***"
+            position, visited = state
+            dx, dy = Actions.directionToVector(action)
+            next_position = (int(position[0] + dx), int(position[1] + dy))
+
+            if not self.walls[next_position[0]][next_position[1]]:
+                next_visited = visited
+                if next_position in self.corners:
+                    next_visited = visited | frozenset([next_position])
+                successors.append(((next_position, next_visited), action, 1))
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
